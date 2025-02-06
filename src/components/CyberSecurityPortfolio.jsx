@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from "lucide-react";
+import { Menu, X, Moon, Sun, ArrowUp } from "lucide-react";
 
 
 // Animation variants for page transitions
@@ -459,7 +459,15 @@ const ContactPage = () => {
                 custom={index}
                 className="text-gray-300"
               >
-                <span className="font-semibold">{profile.label}:</span> {profile.value}
+                <span className="font-semibold">{profile.label}:</span>{' '}
+                <a 
+                  href={profile.value} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-blue-600 hover:underline"
+                >
+                  view profile
+                </a>
               </motion.p>
             ))}
           </div>
@@ -487,10 +495,25 @@ const ContactPage = () => {
 
 // Main Portfolio component
 const Portfolio = () => {
-  const [activeSection, setActiveSection] = useState("home"); // Current active section
-  const [isOpen, setIsOpen] = useState(false); // Mobile menu state
+  const [activeSection, setActiveSection] = useState("home");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Define navigation items and their corresponding sections
+  // Handle scroll to top button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const navigationItems = [
     { id: "home", label: "Home" },
     { id: "skills", label: "Skills" },
@@ -518,26 +541,32 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-blue-900 text-white">
+    <div className={`min-h-screen transition-colors duration-300 ${
+      isDarkMode 
+        ? "bg-gradient-to-br from-gray-900 via-black to-blue-900 text-white" 
+        : "bg-gradient-to-br from-blue-50 via-white to-blue-100 text-gray-900"
+    }`}>
       {/* Navbar */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
-        className="fixed top-0 left-0 w-full bg-black/50 backdrop-blur-md z-10"
+        className={`fixed top-0 left-0 w-full backdrop-blur-md z-10 ${
+          isDarkMode ? "bg-black/50" : "bg-white/50"
+        }`}
       >
         <nav className="container mx-auto flex justify-between items-center p-4">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-2xl font-bold text-blue-400"
+            className={`text-2xl font-bold ${isDarkMode ? "text-blue-400" : "text-blue-600"}`}
           >
             Portfolio
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             {navigationItems.map((item) => (
               <motion.button
                 key={item.id}
@@ -547,21 +576,43 @@ const Portfolio = () => {
                 className={`px-3 py-2 rounded-lg transition-colors ${
                   activeSection === item.id 
                     ? "bg-blue-500 text-white" 
-                    : "text-gray-300 hover:text-blue-400"
+                    : isDarkMode
+                      ? "text-gray-300 hover:text-blue-400"
+                      : "text-gray-600 hover:text-blue-600"
                 }`}
               >
                 {item.label}
               </motion.button>
             ))}
+            
+            {/* Theme Toggle Button */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2 rounded-full hover:bg-gray-200/20"
+            >
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </motion.button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white focus:outline-none"
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <div className="md:hidden flex items-center space-x-2">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2 rounded-full hover:bg-gray-200/20"
+            >
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </motion.button>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className={`text-${isDarkMode ? "white" : "gray-900"} focus:outline-none`}
+            >
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </nav>
 
         {/* Mobile Menu */}
@@ -571,7 +622,9 @@ const Portfolio = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="md:hidden bg-black/80 backdrop-blur-md absolute top-full left-0 w-full flex flex-col items-center py-4 space-y-3"
+              className={`md:hidden absolute top-full left-0 w-full flex flex-col items-center py-4 space-y-3 ${
+                isDarkMode ? "bg-black/80" : "bg-white/80"
+              } backdrop-blur-md`}
             >
               {navigationItems.map((item) => (
                 <motion.button
@@ -585,7 +638,9 @@ const Portfolio = () => {
                   className={`px-4 py-2 rounded-lg w-full text-center ${
                     activeSection === item.id 
                       ? "bg-blue-500 text-white" 
-                      : "text-gray-300 hover:text-blue-400"
+                      : isDarkMode
+                        ? "text-gray-300 hover:text-blue-400"
+                        : "text-gray-600 hover:text-blue-600"
                   }`}
                 >
                   {item.label}
@@ -602,6 +657,27 @@ const Portfolio = () => {
           {renderSection()}
         </AnimatePresence>
       </main>
+
+      {/* Scroll to Top Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            onClick={scrollToTop}
+            className={`fixed bottom-6 right-6 p-3 rounded-full shadow-lg ${
+              isDarkMode 
+                ? "bg-blue-500 hover:bg-blue-600" 
+                : "bg-blue-600 hover:bg-blue-700"
+            } text-white`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <ArrowUp size={24} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
