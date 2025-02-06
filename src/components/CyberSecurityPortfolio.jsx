@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from "lucide-react";
+
 
 // Animation variants for page transitions
 const pageVariants = {
@@ -468,69 +470,136 @@ const ContactPage = () => {
 };
 
 // Navigation item with animation
-const NavItem = ({ item, activeSection, onClick }) => (
-  <motion.button 
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={() => onClick(item.id)}
-    className={`px-4 py-2 rounded-md transition-colors ${
-      activeSection === item.id 
-        ? 'text-blue-400 bg-gray-800/50' 
-        : 'text-gray-300 hover:text-blue-400'
-    }`}
-  >
-    {item.label}
-  </motion.button>
-);
+// const NavItem = ({ item, activeSection, onClick }) => (
+//   <motion.button 
+//     whileHover={{ scale: 1.05 }}
+//     whileTap={{ scale: 0.95 }}
+//     onClick={() => onClick(item.id)}
+//     className={`px-4 py-2 rounded-md transition-colors ${
+//       activeSection === item.id 
+//         ? 'text-blue-400 bg-gray-800/50' 
+//         : 'text-gray-300 hover:text-blue-400'
+//     }`}
+//   >
+//     {item.label}
+//   </motion.button>
+// );
 
 // Main Portfolio component
 const Portfolio = () => {
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState("home"); // Current active section
+  const [isOpen, setIsOpen] = useState(false); // Mobile menu state
 
+  // Define navigation items and their corresponding sections
   const navigationItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'certificates', label: 'Certificates' },
-    { id: 'contact', label: 'Contact' }
+    { id: "home", label: "Home" },
+    { id: "skills", label: "Skills" },
+    { id: "projects", label: "Projects" },
+    { id: "certificates", label: "Certificates" },
+    { id: "contact", label: "Contact" }
   ];
+
+  // Function to render the active section
+  const renderSection = () => {
+    switch (activeSection) {
+      case "home":
+        return <HomePage />;
+      case "skills":
+        return <SkillsPage />;
+      case "projects":
+        return <ProjectsPage />;
+      case "certificates":
+        return <CertificatesPage />;
+      case "contact":
+        return <ContactPage />;
+      default:
+        return <HomePage />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-blue-900 text-white">
-      <motion.header 
+      {/* Navbar */}
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
         className="fixed top-0 left-0 w-full bg-black/50 backdrop-blur-md z-10"
       >
         <nav className="container mx-auto flex justify-between items-center p-4">
-          <motion.div 
+          {/* Logo */}
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="text-2xl font-bold text-blue-400"
           >
-            My Portfolio
+            Portfolio
           </motion.div>
-          <div className="space-x-2">
-            {navigationItems.map(item => (
-              <NavItem
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-4">
+            {navigationItems.map((item) => (
+              <motion.button
                 key={item.id}
-                item={item}
-                activeSection={activeSection}
-                onClick={setActiveSection}
-              />
+                onClick={() => setActiveSection(item.id)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-3 py-2 rounded-lg transition-colors ${
+                  activeSection === item.id 
+                    ? "bg-blue-500 text-white" 
+                    : "text-gray-300 hover:text-blue-400"
+                }`}
+              >
+                {item.label}
+              </motion.button>
             ))}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-white focus:outline-none"
+          >
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </nav>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="md:hidden bg-black/80 backdrop-blur-md absolute top-full left-0 w-full flex flex-col items-center py-4 space-y-3"
+            >
+              {navigationItems.map((item) => (
+                <motion.button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveSection(item.id);
+                    setIsOpen(false);
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`px-4 py-2 rounded-lg w-full text-center ${
+                    activeSection === item.id 
+                      ? "bg-blue-500 text-white" 
+                      : "text-gray-300 hover:text-blue-400"
+                  }`}
+                >
+                  {item.label}
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.header>
 
+      {/* Main Content */}
       <main className="container mx-auto pt-20 px-4">
         <AnimatePresence mode="wait">
-          {activeSection === 'home' && <HomePage key="home" />}
-          {activeSection === 'skills' && <SkillsPage key="skills" />}
-          {activeSection === 'projects' && <ProjectsPage key="projects" />}
-          {activeSection === 'certificates' && <CertificatesPage key="certificates" />}
-          {activeSection === 'contact' && <ContactPage key="contact" />}
+          {renderSection()}
         </AnimatePresence>
       </main>
     </div>
