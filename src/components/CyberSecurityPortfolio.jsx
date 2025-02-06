@@ -62,53 +62,62 @@ const HomePage = () => (
     initial="initial"
     animate="animate"
     exit="exit"
-    className="min-h-screen flex items-center"
+    className="min-h-screen flex flex-col justify-between"
   >
-    <div className="max-w-4xl">
-      <motion.h1 
-        variants={childVariants}
-        className="text-5xl font-bold mb-4"
-      >
-        <span className="text-blue-400">Abderrahmane Baaziz</span>
-      </motion.h1>
-      <motion.p 
-        variants={childVariants}
-        className="text-xl text-gray-300 mb-6"
-      >
-        Junior Penetration Tester | Cybersecurity Specialist
-      </motion.p>
-      
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <motion.div 
-          variants={cardHoverVariants}
-          whileHover="hover"
-          className="bg-gray-800/30 p-6 rounded-lg"
+    <div className="flex items-center">
+      <div className="max-w-4xl">
+        <motion.h1 
+          variants={childVariants}
+          className="text-5xl font-bold mb-4"
         >
-          <h3 className="text-2xl font-semibold text-blue-400 mb-4">Professional Profile</h3>
-          <p className="text-gray-300">
-            Passionate cybersecurity professional specializing in penetration testing and network security. 
-            eJPTv2 certified with hands-on experience in vulnerability assessment and ethical hacking.
-          </p>
-        </motion.div>
-        <motion.div 
-          variants={cardHoverVariants}
-          whileHover="hover"
-          className="bg-gray-800/30 p-6 rounded-lg"
+          <span className="text-blue-400">Abderrahmane Baaziz</span>
+        </motion.h1>
+        <motion.p 
+          variants={childVariants}
+          className="text-xl text-gray-300 mb-6"
         >
-          <h3 className="text-2xl font-semibold text-blue-400 mb-4">Education</h3>
-          <div className="text-gray-300">
-            <p className="font-semibold">University of Algiers</p>
-            <p>Licence 2 - Cybersecurity</p>
-            <p className="mt-2">Focus Areas:</p>
-            <ul className="list-disc list-inside">
-              <li>Network Security</li>
-              <li>Ethical Hacking</li>
-              <li>Web Security</li>
-            </ul>
-          </div>
-        </motion.div>
+          Junior Penetration Tester | Cybersecurity Student
+        </motion.p>
+        
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <motion.div 
+            variants={cardHoverVariants}
+            whileHover="hover"
+            className="bg-gray-800/30 p-6 rounded-lg"
+          >
+            <h3 className="text-2xl font-semibold text-blue-400 mb-4">Professional Profile</h3>
+            <p className="text-gray-300">
+              Passionate cybersecurity professional specializing in penetration testing and network security. 
+              eJPTv2 certified with hands-on experience in vulnerability assessment and ethical hacking.
+            </p>
+          </motion.div>
+          <motion.div 
+            variants={cardHoverVariants}
+            whileHover="hover"
+            className="bg-gray-800/30 p-6 rounded-lg"
+          >
+            <h3 className="text-2xl font-semibold text-blue-400 mb-4">Education</h3>
+            <div className="text-gray-300">
+              <p className="font-semibold">University of Algiers</p>
+              <p>Licence 2 - Computer Science</p>
+              <p className="mt-2">Focus Areas:</p>
+              <ul className="list-disc list-inside">
+                <li>Web Security</li>
+                <li>Mobile App hacking</li>
+                <li>Web Dev</li>
+              </ul>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
+    
+    <motion.div
+      variants={childVariants}
+      className="text-center text-gray-400 py-4"
+    >
+      <p>&copy; {new Date().getFullYear()} Abderrahmane Baaziz. All rights reserved.</p>
+    </motion.div>
   </motion.section>
 );
 
@@ -136,19 +145,20 @@ const SkillBar = ({ name, level }) => (
 // SkillsPage component
 const SkillsPage = () => {
   const technicalSkills = [
-    { name: "Penetration Testing", level: 85 },
-    { name: "Network Security", level: 80 },
+    { name: "Penetration Testing", level: 70 },
+    { name: "Network Security", level: 65 },
     { name: "Web Security", level: 75 },
     { name: "Python", level: 70 },
     { name: "Linux", level: 85 },
-    { name: "OWASP Top 10", level: 80 }
+    { name: "OWASP Top 10", level: 80 },
+    { name: "Web dev", level: 67 }
   ];
 
   const toolsAndPlatforms = [
     { name: "Kali Linux", level: 90 },
-    { name: "Burp Suite", level: 75 },
-    { name: "Metasploit", level: 80 },
-    { name: "Wireshark", level: 85 },
+    { name: "Burp Suite", level: 85 },
+    { name: "Metasploit", level: 60 },
+    { name: "Wireshark", level: 45 },
     { name: "Nmap", level: 90 }
   ];
 
@@ -258,26 +268,29 @@ const ProjectCard = ({ project, index }) => (
 const ProjectsPage = () => {
   const projects = [
     {
-      title: "Vulnerability Scanner",
-      description: "A Python-based vulnerability scanner that identifies common security flaws in web applications. Features automated scanning and detailed reporting capabilities.",
-      technologies: ["Python", "SQLite", "OWASP"],
-      githubLink: "https://github.com/abderrahmane-baaziz/vuln-scanner",
+      title: "Magisk Android Root",
+      description: "Magisk is an open-source suite for customizing Android (Android 6.0+), offering features like root access (MagiskSU), module installation for modifying partitions, boot image management (MagiskBoot), and running code in app processes (Zygisk).",
+      technologies: ["C++", "Android",],
+      githubLink: "https://github.com/abdo0vuln/Magisk",
       type: "Security Tool"
     },
     {
-      title: "Network Traffic Analyzer",
-      description: "Real-time network traffic analysis tool built with Python and Scapy. Helps identify suspicious network patterns and potential security threats.",
-      technologies: ["Python", "Scapy", "PyQt5"],
-      githubLink: "https://github.com/abderrahmane-baaziz/traffic-analyzer",
-      type: "Network Security"
+     
+      title: "Capture the Flag (CTF) Site(team project)",
+      description: "A beginner-friendly CTF site with 8 challenges in cryptography, OSINT, and math, designed to help you test and improve your problem-solving skills.",
+      technologies: ["HTML5", "Bootstrap", "NodeJs", "MongoDB"],
+      githubLink: "https://github.com/octobit-club/octobit_opening_event",  // Replace with your actual GitHub link if available
+      type: "Web Application"
     },
     {
-      title: "Web Security Dashboard",
-      description: "A dashboard for monitoring and visualizing security metrics, built with React and Node.js. Includes real-time alerts and incident tracking.",
-      technologies: ["React", "Node.js", "MongoDB"],
-      githubLink: "https://github.com/abderrahmane-baaziz/security-dashboard",
-      type: "Full Stack"
+      title: "Portfolio Website",
+      description: "A personal portfolio website to showcase projects, skills, and achievements. Built using React, hosted on Vercel.",
+      technologies: ["React", "vercel"],
+      githubLink: "https://github.com/abdo0vuln/porfolio",  // Replace with your actual GitHub link
+      type: "Web Application",
+      projectType: "Solo Project"
     }
+    
   ];
 
   return (
@@ -384,15 +397,15 @@ const CertificatesPage = () => {
 // ContactPage component with enhanced animations
 const ContactPage = () => {
   const contactInfo = [
-    { label: "Email", value: "abderrahmane.baaziz@example.com" },
+    { label: "Email", value: "contact.baaziz@gmail.com" },
     { label: "Location", value: "Algiers, Algeria" },
     { label: "University", value: "University of Algiers" }
   ];
 
   const profiles = [
-    { label: "LinkedIn", value: "linkedin.com/in/abderrahmane-baaziz" },
-    { label: "GitHub", value: "github.com/abderrahmane-baaziz" },
-    { label: "HackTheBox", value: "hackthebox.com/abderrahmane" }
+    { label: "LinkedIn", value: "https://www.linkedin.com/in/abderrahmane-baaziz-0305032bb/", icon: "/icons/linkedin.png" },
+    { label: "GitHub", value: "https://github.com/abdo0vuln", icon: "/icons/github.png" },
+    { label: "TryHackMe", value: "https://tryhackme.com/p/vuln0sec", icon: "/icons/hackthebox.svg" }
   ];
 
   return (
@@ -496,7 +509,7 @@ const Portfolio = () => {
             animate={{ opacity: 1, x: 0 }}
             className="text-2xl font-bold text-blue-400"
           >
-            Portfolio
+            My Portfolio
           </motion.div>
           <div className="space-x-2">
             {navigationItems.map(item => (
