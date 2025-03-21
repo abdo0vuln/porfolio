@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Moon, Sun, ArrowUp } from "lucide-react";
 
 
+
+
 // Animation variants for page transitions
 const pageVariants = {
   initial: {
@@ -58,70 +60,137 @@ const cardHoverVariants = {
 };
 
 // HomePage component
-const HomePage = () => (
-  <motion.section 
-    variants={pageVariants}
-    initial="initial"
-    animate="animate"
-    exit="exit"
-    className="min-h-screen flex flex-col justify-between"
-  >
-    <div className="flex items-center">
-      <div className="max-w-4xl">
-        <motion.h1 
-          variants={childVariants}
-          className="text-5xl font-bold mb-4"
-        >
-          <span className="text-blue-400">Abderrahmane Baaziz</span>
-        </motion.h1>
-        <motion.p 
-          variants={childVariants}
-          className="text-xl text-gray-300 mb-6"
-        >
-          Junior Penetration Tester | Cybersecurity Student
-        </motion.p>
-        
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <motion.div 
-            variants={cardHoverVariants}
-            whileHover="hover"
-            className="bg-gray-800/30 p-6 rounded-lg"
+
+
+const HomePage = () => {
+  
+  const [hasExplored, setHasExplored] = useState(false);
+  
+  // Function to handle the explore action
+  const handleExplore = () => {
+    setHasExplored(true);
+    
+    const projectsPreviewSection = document.getElementById('projects-preview-section');
+    if (projectsPreviewSection) {
+      projectsPreviewSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <motion.section
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="min-h-screen flex flex-col justify-between"
+    >
+      <div className="flex items-center">
+        <div className="max-w-4xl">
+          <motion.h1
+            variants={childVariants}
+            className="text-5xl font-bold mb-4"
           >
-            <h3 className="text-2xl font-semibold text-blue-400 mb-4">Professional Profile</h3>
-            <p className="text-gray-300">
-              Passionate cybersecurity professional specializing in penetration testing and network security. 
-              eJPTv2 certified with hands-on experience in vulnerability assessment and ethical hacking.
-            </p>
-          </motion.div>
-          <motion.div 
-            variants={cardHoverVariants}
-            whileHover="hover"
-            className="bg-gray-800/30 p-6 rounded-lg"
+            <span className="text-blue-400">Abderrahmane Baaziz</span>
+          </motion.h1>
+          <motion.p
+            variants={childVariants}
+            className="text-xl text-gray-300 mb-6"
           >
-            <h3 className="text-2xl font-semibold text-blue-400 mb-4">Education</h3>
-            <div className="text-gray-300">
-              <p className="font-semibold">University of Algiers</p>
-              <p>Licence 2 - Computer Science</p>
-              <p className="mt-2">Focus Areas:</p>
-              <ul className="list-disc list-inside">
-                <li>Web Security</li>
-                <li>Mobile App hacking</li>
-                <li>Web Dev</li>
-              </ul>
-            </div>
-          </motion.div>
+            Junior Penetration Tester | Cybersecurity Student
+          </motion.p>
+         
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <motion.div
+              variants={cardHoverVariants}
+              whileHover="hover"
+              className="bg-gray-800/30 p-6 rounded-lg"
+            >
+              <h3 className="text-2xl font-semibold text-blue-400 mb-4">Professional Profile</h3>
+              <p className="text-gray-300">
+                Passionate cybersecurity professional specializing in penetration testing and network security.
+                eJPTv2 certified with hands-on experience in vulnerability assessment and ethical hacking.
+              </p>
+            </motion.div>
+            <motion.div
+              variants={cardHoverVariants}
+              whileHover="hover"
+              className="bg-gray-800/30 p-6 rounded-lg"
+            >
+              <h3 className="text-2xl font-semibold text-blue-400 mb-4">Education</h3>
+              <div className="text-gray-300">
+                <p className="font-semibold">University of Algiers</p>
+                <p>Licence 2 - Computer Science</p>
+                <p className="mt-2">Focus Areas:</p>
+                <ul className="list-disc list-inside">
+                  <li>Web Security</li>
+                  <li>Mobile App hacking</li>
+                  <li>Web Dev</li>
+                </ul>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <motion.div
-      variants={childVariants}
-      className="text-center text-gray-400 py-4"
-    >
-      <p>&copy; {new Date().getFullYear()} Abderrahmane Baaziz. All rights reserved.</p>
-    </motion.div>
-  </motion.section>
-);
+      
+      {/* Scroll Engagement Button */}
+      <motion.div
+        className="w-full flex justify-center mb-8"
+        variants={childVariants}
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0,
+          transition: {
+            repeat: Infinity,
+            repeatType: "reverse",
+            duration: 1.5
+          }
+        }}
+      >
+        <button 
+          onClick={handleExplore}
+          className="flex flex-col items-center text-blue-400 hover:text-blue-300 transition-colors focus:outline-none"
+          aria-label="Scroll down to explore more"
+        >
+          <p className="text-sm mb-1">Explore More</p>
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+            className="animate-bounce"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </motion.div>
+
+      
+      <div 
+        id="projects-preview-section" 
+        className={`transition-all duration-1000 ${
+          hasExplored 
+            ? "filter-none opacity-100" 
+            : "blur-md opacity-60"
+        }`}
+      >
+        <ProjectsPreview />
+      </div>
+     
+      <motion.div
+        variants={childVariants}
+        className="text-center text-gray-400 py-4"
+      >
+        <p>&copy; {new Date().getFullYear()} Abderrahmane Baaziz. All rights reserved.</p>
+      </motion.div>
+    </motion.section>
+  );
+};
 
 // SkillBar component with animation
 const SkillBar = ({ name, level }) => (
@@ -315,6 +384,47 @@ const ProjectsPage = () => {
         ))}
       </div>
     </motion.section>
+  );
+};
+// ProjectsPreview component
+const ProjectsPreview = () => {
+  // Show only one highlighted project
+  const featuredProject = {
+    title: "Magisk Android Root",
+    description: "Magisk is an open-source suite for customizing Android (Android 6.0+), offering features like root access and more.",
+    technologies: ["C++", "Android"],
+    githubLink: "https://github.com/abdo0vuln/Magisk",
+    type: "Security Tool"
+  };
+
+  return (
+    <motion.div variants={childVariants} className="my-12 pb-8">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-blue-400">Featured Project</h2>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            // Find the Projects section button and click it to navigate to full projects page
+            const portfolioElement = document.querySelector('button[data-section="projects"]');
+            if (portfolioElement) portfolioElement.click();
+            else {
+              // Fallback: manually set active section
+              const navButtons = document.querySelectorAll('nav button');
+              navButtons.forEach(button => {
+                if (button.textContent.trim() === 'Projects') {
+                  button.click();
+                }
+              });
+            }
+          }}
+          className="text-blue-400 hover:text-blue-300"
+        >
+          View all projects →
+        </motion.button>
+      </div>
+      <ProjectCard project={featuredProject} index={0} />
+    </motion.div>
   );
 };
 
@@ -519,7 +629,8 @@ const Portfolio = () => {
     { id: "skills", label: "Skills" },
     { id: "projects", label: "Projects" },
     { id: "certificates", label: "Certificates" },
-    { id: "contact", label: "Contact" }
+    { id: "contact", label: "Contact" },
+    
   ];
 
   // Function to render the active section
@@ -570,6 +681,7 @@ const Portfolio = () => {
             {navigationItems.map((item) => (
               <motion.button
                 key={item.id}
+                data-section={item.id}
                 onClick={() => setActiveSection(item.id)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -629,6 +741,7 @@ const Portfolio = () => {
               {navigationItems.map((item) => (
                 <motion.button
                   key={item.id}
+                  data-section={item.id}
                   onClick={() => {
                     setActiveSection(item.id);
                     setIsOpen(false);
